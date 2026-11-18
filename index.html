@@ -1,0 +1,194 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Wise</title>
+<style>
+:root{--b:#5b7a4f;--bd:#3f5736;--bl:#a9c192;--bg:#f4f7f1;--c:#fff;--t:#1d2a19;--m:#6b7a65;--l:#e1e8dc;--ok:#1f9d55;--w:#d99a06;--o:#e8710a;--r:#d63b3b}
+[data-t=d]{--bg:#111a0f;--c:#1b2619;--t:#eaf1e6;--m:#9db096;--l:#2b3a27}
+*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--t);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.top{position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;padding:10px 14px;background:var(--c);border-bottom:1px solid var(--l)}
+.sl{height:34px;border-radius:8px}.bn{color:var(--bd);font-size:17px}[data-t=d] .bn{color:var(--bl)}.sp{flex:1}
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--b),var(--bl));color:#fff;display:grid;place-items:center;font-weight:700}
+.btn{border:0;border-radius:12px;padding:10px 14px;background:var(--b);color:#fff;font:600 14px inherit;cursor:pointer}.btn.s{background:var(--l);color:var(--t)}.btn.r{background:var(--r)}.btn.o{background:var(--o)}.btn.sm{padding:6px 10px;font-size:13px}.big{width:100%;padding:14px;margin-top:16px;background:linear-gradient(90deg,var(--bd),var(--bl))}
+.ib{border:0;border-radius:10px;padding:8px 10px;background:var(--l);color:var(--t);cursor:pointer}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;background:var(--bg)}.tab{white-space:nowrap;border:0;border-radius:20px;padding:8px 14px;background:var(--c);color:var(--m);cursor:pointer;border:1px solid var(--l)}.tab.on{background:var(--b);color:#fff}
+.wrap{max-width:1000px;margin:auto;padding:6px 14px 40px}h2{margin:10px 0 2px}.m{color:var(--m)}
+.card{background:var(--c);border:1px solid var(--l);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 4px 14px #0000000a}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.g .card{margin:0}.k{font-size:12px;color:var(--m)}.v{font-size:22px;font-weight:800;margin-top:4px}
+.hero2{background:linear-gradient(135deg,var(--bd),var(--b) 60%,var(--bl));color:#fff;border-radius:20px;padding:18px;margin:12px 0}.bar{height:9px;border-radius:9px;background:#ffffff40;margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;background:#fff}.bar.d{background:var(--l)}.bar.d i{background:var(--b)}
+.chip{padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;background:var(--l)}.chip.ok{background:#1f9d5522;color:var(--ok)}.chip.w{background:#d99a0633;color:var(--w)}.chip.o{background:#e8710a22;color:var(--o)}.chip.r{background:#d63b3b22;color:var(--r)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--l)}.sc{overflow-x:auto}.n{text-align:right}
+input,select,textarea{width:100%;padding:11px;border-radius:12px;border:1px solid var(--l);background:var(--bg);color:var(--t);font:inherit;margin:4px 0 10px}label{font-size:13px;font-weight:600}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--l)}.row:last-child{border:0}
+.hero{background:linear-gradient(160deg,#1b2619,var(--bd));color:#fff;padding:36px 24px;min-height:34vh}.lg{height:120px;border-radius:50%;background:#fff;padding:6px}.lw{max-width:440px;margin:auto;padding:24px}.lw h1{font-size:44px;margin:10px 0}
+.wa{background:#d99a0622;border-left:4px solid var(--w);padding:8px 10px;border-radius:8px;margin:8px 0;font-size:13px}.ph{display:none}
+@media print{.np{display:none!important}.ph{display:flex;align-items:center;gap:12px}body{background:#fff;color:#000}.card{box-shadow:none;break-inside:avoid}}
+</style></head><body><div id="app"></div>
+<script>
+const K='decorstamp_v1',$=s=>document.querySelector(s),v=i=>$('#'+i).value.trim();
+const e=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const R=x=>(+x||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const D=t=>new Date(t).toLocaleDateString('pt-BR'),dg=s=>(s||'').replace(/\D/g,'');
+// ===== Camada de dados (localStorage). Trocar por chamadas ao Supabase (RPCs do arquivo SQL) depois =====
+let S=JSON.parse(localStorage.getItem(K)||'null')||{users:[{id:1,nome:'Diretor',email:'diretor@wise.com',senha:'administrador',role:'admin',ativo:1,misc:0}],sup:[],inv:[],pay:[],led:[],exp:[],log:[],n:10};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+S.users.forEach(u=>{if(u.id==1&&u.email=='admin@wise.com'&&u.senha=='admin123'){u.email='diretor@wise.com';u.senha='administrador'}});
+S.users.forEach(u=>{u.email=u.email.split('@')[0]+'@wise.com';u.nome=cap(u.email.split('@')[0])});
+if(!S.pay.some(p=>p.u==2)&&!S.exp.some(x=>x.u==2))S.users=S.users.filter(u=>!(u.id==2&&u.email=='func@wise.com'));
+const save=()=>localStorage.setItem(K,JSON.stringify(S)),nid=()=>S.n++;
+let me=S.users.find(x=>x.id==sessionStorage.u&&x.ativo)||null,page='home',arg=null,mes=new Date().toISOString().slice(0,7);
+const log=(a,i)=>S.log.push({ts:Date.now(),u:me&&me.id,a,i});
+const led=(sup,tipo,val,ref,just)=>S.led.push({id:nid(),sup,tipo,val,ts:Date.now(),ref,just,u:me.id});
+const saldo=(s,to=Infinity)=>S.led.filter(l=>l.sup==s&&l.ts<to).reduce((a,l)=>a+l.val,0);
+const sn=i=>e((S.sup.find(x=>x.id==i)||{}).nome),un=i=>e((S.users.find(x=>x.id==i)||{}).nome);
+const rng=m=>{const[y,o]=m.split('-');return[new Date(y,o-1,1).getTime(),new Date(y,o,1).getTime()]};
+const ST={ag:['Aguardando aprovação','w'],an:['Requer análise','o'],co:['Correção solicitada','o'],ap:['Aprovado','ok'],rj:['Rejeitado','r'],es:['Estornado','']};
+const chip=s=>`<span class="chip ${ST[s][1]}">${ST[s][0]}</span>`;
+const sum=(t,f)=>S.led.filter(l=>l.tipo==t&&f(l)).reduce((a,l)=>a+l.val,0);
+
+function addSup(nome,doc){doc=dg(doc);if(!nome||![11,14].includes(doc.length)){alert('Informe nome e CPF/CNPJ válido (11 ou 14 dígitos).');return}
+ let s=S.sup.find(x=>x.doc==doc);if(!s){s={id:nid(),cod:S.sup.length+1,nome,doc,ativo:1};S.sup.push(s);log('fornecedor criado',nome)}return s}
+function nova(){const val=parseFloat(v('nv').replace(',','.'));if(!v('nn')||!(val>0))return alert('Informe número e valor.');
+ const s=addSup(v('nm'),v('nc'));if(!s)return;
+ if(S.inv.some(x=>x.sup==s.id&&x.num==v('nn')&&x.st=='ativa'))return alert('NF já lançada para este fornecedor.');
+ const i={id:nid(),sup:s.id,num:v('nn'),val,obs:v('no'),st:'ativa',u:me.id,ts:Date.now()};S.inv.push(i);led(s.id,'nota_fiscal',val,i.id);log('NF lançada',v('nn'));save();go('nf')}
+function appr(i,c){const p=S.pay.find(x=>x.id==i);if(!['ag','an'].includes(p.st))return;
+ if(p.txid&&S.pay.some(x=>x.id!=i&&x.st=='ap'&&(x.txid||'').toLowerCase()==p.txid.toLowerCase()))return alert('Esse ID de transação já foi aprovado em outro pagamento.');
+ let j=null;if(p.val>saldo(p.sup)){if(!c){p.st='an';save();alert('Pagamento maior que o saldo: requer análise. Aprove novamente para confirmar crédito.');return go()}
+  j=prompt('Pagamento maior que o saldo; o excedente vira crédito. Justificativa:');if(!j)return}
+ p.st='ap';p.by=me.id;p.at=Date.now();p.motivo=j||p.motivo;led(p.sup,'pagamento',-p.val,p.id,j);log('pagamento aprovado',p.id);save();go()}
+function rej(i,st){const m=prompt(st=='rj'?'Motivo da rejeição:':'O que o funcionário deve corrigir:');if(!m)return;const p=S.pay.find(x=>x.id==i);if(!['ag','an'].includes(p.st))return;p.st=st;p.motivo=m;log('pagamento '+st,i);save();go()}
+function est(i){const l=S.led.find(x=>x.id==i),j=prompt('Justificativa do estorno:');if(!j)return;led(l.sup,'estorno',-l.val,l.id,j);
+ if(l.tipo=='pagamento')S.pay.find(x=>x.id==l.ref).st='es';if(l.tipo=='nota_fiscal')S.inv.find(x=>x.id==l.ref).st='cancelada';log('estorno',i);save();go('sup',l.sup)}
+function ajuste(s){const x=parseFloat(v('aj').replace(',','.')),j=v('ajj');if(!x||!j)return alert('Informe valor (+/−) e justificativa.');led(s,'ajuste',x,null,j);log('ajuste',s);save();go('sup',s)}
+function inicial(s){const x=parseFloat(v('si').replace(',','.'));if(!x||S.led.some(l=>l.sup==s&&l.tipo=='saldo_inicial'))return alert('Valor inválido ou saldo inicial já lançado (use ajuste).');led(s,'saldo_inicial',x,null,'Saldo inicial');save();go('sup',s)}
+function addSupForm(){const s=addSup(v('fn'),v('fd'));if(!s)return;const x=parseFloat(v('fs').replace(',','.'));if(x&&!S.led.some(l=>l.sup==s.id))led(s.id,'saldo_inicial',x,null,'Saldo inicial');save();go('sup')}
+function envia(){const val=parseFloat(v('pv').replace(',','.'));if(!v('ps')||!(val>0)||!v('pd'))return alert('Fornecedor, valor e data são obrigatórios.');
+ const o={sup:+v('ps'),val,data:v('pd'),pagador:v('pp'),forma:v('pf'),txid:v('pt'),obs:v('po'),arq:($('#pa').files[0]||{}).name||(S.pay.find(x=>x.id==arg)||{}).arq};
+ if(arg){Object.assign(S.pay.find(x=>x.id==arg),o,{st:'ag'})}else S.pay.push({id:nid(),...o,st:'ag',u:me.id,ts:Date.now()});
+ log('comprovante enviado',v('pv'));save();go('mine')}
+function expSave(){const val=parseFloat(v('ev').replace(',','.'));if(!v('ed')||!(val>0)||!v('ex'))return alert('Data, descrição e valor são obrigatórios.');
+ S.exp.push({id:nid(),data:v('ex'),desc:v('ed'),est:v('ee'),cat:v('ec')||'Sem categoria',val,forma:v('ef'),pagador:v('ep'),st:'ag',u:me.id,ts:Date.now()});log('despesa avulsa',val);save();go('exp')}
+function expDec(i,st){const x=S.exp.find(y=>y.id==i);let m=null;if(st!='ap'){m=prompt('Motivo:');if(!m)return}x.st=st;x.motivo=m;x.by=me.id;save();go('exp')} // nunca toca o ledger
+function userAdd(){const p=v('ue').toLowerCase().split('@')[0].replace(/[^a-z0-9._-]/g,'');if(!p||v('up').length<6)return alert('Informe o usuário e uma senha com 6+ caracteres.');if(S.users.some(x=>!x.del&&x.email==p+'@wise.com'))return alert('Esse usuário já existe.');S.users.push({id:nid(),nome:cap(p),email:p+'@wise.com',senha:v('up'),role:v('ur'),ativo:1,misc:0});save();go('usr')}
+function userDel(i){const u=S.users.find(x=>x.id==i);if(u.id==me.id)return alert('Você não pode excluir a si mesmo.');if(u.role=='admin'&&S.users.filter(x=>x.role=='admin'&&!x.del).length<2)return alert('Não é possível excluir o último administrador.');if(!confirm('Excluir o usuário '+u.nome+'? Os lançamentos que ele já fez continuam no histórico.'))return;u.del=1;u.ativo=0;u.misc=0;log('usuário excluído',i);save();go('usr')}
+function wl(){const p=v('em').split('@')[0];$('#wl').innerHTML=p?'Bem-vindo,<br><b style="color:var(--bl)">'+e(cap(p))+'</b>':'Bem-vindo à<br><b style="color:var(--bl)">Wise</b>'}
+function userMisc(i){const cur=S.users.find(x=>x.misc);if(cur&&cur.id!=i&&!confirm('Transferir a permissão de '+cur.nome+' para este funcionário?'))return;S.users.forEach(x=>x.misc=0);S.users.find(x=>x.id==i).misc=1;log('permissão despesas avulsas',i);save();go('usr')}
+function login(){const p=v('em').toLowerCase().split('@')[0],u=S.users.find(x=>!x.del&&x.ativo&&x.email==p+'@wise.com'&&x.senha==$('#pw').value);if(!u)return alert('Usuário ou senha inválidos.');me=u;sessionStorage.u=u.id;page='home';render()}
+function out(){me=null;sessionStorage.removeItem('u');render()}
+function th(){const d=document.documentElement;d.dataset.t=d.dataset.t=='d'?'':'d';localStorage.th=d.dataset.t}
+function go(p,a){if(p)page=p,arg=a;render()}
+const th0=()=>{if(localStorage.th)document.documentElement.dataset.t=localStorage.th};
+const logo=c=>`<img src="logo.jpeg" class="${c}" alt="Wise" onerror="this.style.display='none'">`;
+const head=(t,s)=>`<h2>${t}</h2><p class="m">${s||''}</p>`;
+
+const P={
+home(){return me.role=='admin'?Dash():Inicio()},
+Dash(){},
+};
+const SB='https://cxesnjxoonlrlbwnruxk.supabase.co',AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZXNuanhvb25scmxid25ydXhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1MDk0OTUsImV4cCI6MjExMDA4NTQ5NX0.NW2EvD8WxY0gS3HOR19pyqUmmswJbMXxbyfficVlNlI';
+const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9 ]/g,' ').trim();
+const toB64=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.onerror=no;r.readAsDataURL(f)});
+const shrink=f=>new Promise((ok,no)=>{const im=new Image(),u=URL.createObjectURL(f);im.onload=()=>{const k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.85).split(',')[1])};im.onerror=no;im.src=u});
+// Leitura automática do comprovante (Gemini via Supabase). Se falhar, a pessoa preenche manualmente.
+async function lerArq(inp){const f=inp.files[0],box=$('#ia');if(!f)return;
+ const say=(t,w)=>{box.style.display='block';box.style.borderColor=w?'var(--o)':'var(--ok)';box.innerHTML=t};
+ say('⏳ Lendo o comprovante…');
+ try{let b,mime=f.type;
+  if(mime=='application/pdf'){if(f.size>4e6)throw 'grande';b=await toB64(f)}
+  else if(mime.startsWith('image/')){b=await shrink(f);mime='image/jpeg'}
+  else throw 'tipo';
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),45000);
+  const r=await fetch(SB+'/functions/v1/ler-comprovante',{method:'POST',signal:c.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+AK,apikey:AK},body:JSON.stringify({arquivo_base64:b,mime})});
+  clearTimeout(t);const j=await r.json();if(!j.ok)throw j.erro||'falha';
+  const d=j.dados,set=(i,x)=>{if(x!=null&&x!=='')$('#'+i).value=x};
+  set('pv',d.valor!=null?String(d.valor).replace('.',','):null);set('pd',d.data_pagamento);set('pp',d.pagador_nome);set('pf',d.forma_pagamento);set('pt',d.transacao_id);
+  const dn=norm(d.destinatario_nome),s=S.sup.find(x=>d.destinatario_documento&&x.doc==d.destinatario_documento)||(dn.length>3?S.sup.find(x=>{const n=norm(x.nome);return n&&(n.includes(dn)||dn.includes(n))}):null);
+  if(s)$('#ps').value=s.id;
+  say('✅ Leitura concluída. Confira os dados antes de enviar.'+(s?'':'<br>Fornecedor não identificado'+(d.destinatario_nome?' (destinatário lido: '+e(d.destinatario_nome)+')':'')+': selecione manualmente.')+((j.avisos||[]).map(a=>'<br>'+e(a)).join('')))
+ }catch(x){say('Não consegui ler o comprovante automaticamente. Preencha os dados manualmente.',1)}}
+const PAL=['#3f5736','#5b7a4f','#a9c192','#d99a06','#e8710a','#2f7ea8','#8e5ea2'];
+const sv=(h,b)=>`<svg viewBox="0 0 600 ${h}" width="100%" role="img" style="color:var(--t)">${b}</svg>`;
+const leg=(c,t)=>`<span style="margin-right:12px;font-size:13px"><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${c}"></i> ${t}</span>`;
+function barsC(lab,series,cols){const mx=Math.max(1,...series.flat()),n=lab.length,w=600/n,k=series.length;
+ return sv(200,series.map((s,j)=>s.map((x,i)=>`<rect x="${i*w+j*(w-6)/k+3}" y="${170-x/mx*150}" width="${(w-6)/k-1}" height="${x/mx*150}" rx="2" fill="${cols[j]}"><title>${lab[i]}: ${R(x)}</title></rect>`).join('')).join('')+lab.map((l,i)=>n>12&&i%3?'':`<text x="${i*w+w/2}" y="190" font-size="11" text-anchor="middle" fill="#9db096">${l}</text>`).join('')+`<line x1="0" x2="600" y1="170" y2="170" stroke="#9db096"/>`)}
+function lineC(lab,a){const mx=Math.max(1,...a),mn=Math.min(0,...a),n=a.length,pt=a.map((x,i)=>[n>1?10+i*580/(n-1):300,170-(x-mn)/(mx-mn||1)*150]);
+ return sv(190,`<polyline fill="none" stroke="#5b7a4f" stroke-width="3" points="${pt.map(p=>p.join(',')).join(' ')}"/>`+pt.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#3f5736"><title>Dia ${lab[i]}: ${R(a[i])}</title></circle>`).join('')+`<line x1="0" x2="600" y1="170" y2="170" stroke="#9db096"/>`)}
+function donut(en){en=en.filter(x=>x[1]>0).slice(0,7);const t=en.reduce((x,i)=>x+i[1],0);if(!t)return '<p class="m">Sem dados no período.</p>';let a=0;const c=2*Math.PI*60;
+ const arcs=en.map(([k,x],i)=>{const f=x/t,s=`<circle r="60" cx="80" cy="80" fill="none" stroke="${PAL[i]}" stroke-width="28" stroke-dasharray="${f*c} ${c}" stroke-dashoffset="${-a*c}" transform="rotate(-90 80 80)"><title>${e(k)}: ${R(x)}</title></circle>`;a+=f;return s}).join('');
+ return `<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;color:var(--t)"><svg viewBox="0 0 160 160" width="160">${arcs}<text x="80" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">${R(t)}</text></svg><div style="font-size:13px">${en.map(([k,x],i)=>`<div>${leg(PAL[i],e(k)+' · '+R(x))}</div>`).join('')}</div></div>`}
+const exCat=(f,t)=>{const o={};S.exp.filter(x=>x.st=='ap'&&x.data>=f&&x.data<=t).forEach(x=>o[x.cat]=(o[x.cat]||0)+x.val);return Object.entries(o).sort((p,q)=>q[1]-p[1])};
+function Dash(){const[a,b]=rng(mes),[y,o]=mes.split('-'),days=new Date(y,o,0).getDate(),
+ nf=sum('nota_fiscal',l=>l.ts>=a&&l.ts<b),pg=-sum('pagamento',l=>l.ts>=a&&l.ts<b),dev=S.led.reduce((x,l)=>x+l.val,0),
+ pend=S.pay.filter(p=>['ag','an'].includes(p.st)).length,exa=S.exp.filter(x=>x.st=='ag').length,
+ exm=S.exp.filter(x=>x.st=='ap'&&x.data.startsWith(mes)).reduce((x,i)=>x+i.val,0);
+ const A=Array(days).fill(0),B=[...A],Dd=[...A];
+ S.led.filter(l=>l.ts>=a&&l.ts<b).forEach(l=>{const d=new Date(l.ts).getDate()-1;Dd[d]+=l.val;if(l.tipo=='nota_fiscal')A[d]+=l.val;if(l.tipo=='pagamento')B[d]-=l.val});
+ let r=S.led.filter(l=>l.ts<a).reduce((x,l)=>x+l.val,0);const ev=Dd.map(x=>r+=x),dl=A.map((_,i)=>i+1);
+ const M=[...Array(6).keys()].reverse().map(i=>{const m=new Date(y,o-1-i,1),ym=m.getFullYear()+'-'+String(m.getMonth()+1).padStart(2,'0'),[p,q]=rng(ym);
+  return{l:m.toLocaleDateString('pt-BR',{month:'short'}),nf:sum('nota_fiscal',x=>x.ts>=p&&x.ts<q),pg:-sum('pagamento',x=>x.ts>=p&&x.ts<q),ex:S.exp.filter(x=>x.st=='ap'&&x.data.startsWith(ym)).reduce((s,x)=>s+x.val,0)}});
+ const rk=S.sup.map(s=>({s,x:saldo(s.id)})).filter(r=>r.x>0).sort((p,q)=>q.x-p.x).slice(0,5),top=rk[0]?rk[0].x:1,mv=S.led.slice(-6).reverse();
+ return `${head('Bem-vindo, '+e(me.nome)+' 👋','Resumo financeiro.')}
+ <label>Mês</label><input type="month" id="mm" value="${mes}" onchange="mes=this.value;go()" style="max-width:220px">
+ <div class="hero2"><div>Saldo devedor total</div><div class="v" style="font-size:30px">${R(dev)}</div><div class="bar"><i style="width:${Math.min(100,nf?pg/nf*100:0)}%"></i></div><small>Pago no mês: ${R(pg)} de ${R(nf)} em novas NFs</small></div>
+ <div class="g"><div class="card"><div class="k">Novas NFs no mês</div><div class="v">${R(nf)}</div></div><div class="card"><div class="k">Pago no mês</div><div class="v" style="color:var(--ok)">${R(pg)}</div></div>
+ <div class="card"><div class="k">Despesas avulsas (aprovadas)</div><div class="v">${R(exm)}</div></div><div class="card"><div class="k">Pagamentos a aprovar</div><div class="v">${pend}</div></div>
+ <div class="card"><div class="k">Despesas a conferir</div><div class="v">${exa}</div></div><div class="card"><div class="k">Fornecedores</div><div class="v">${S.sup.length}</div></div></div>
+ <div class="card"><b>NFs × pagamentos por dia</b><p class="m">${leg('#3f5736','NFs')}${leg('#a9c192','Pagamentos')}</p>${barsC(dl,[A,B],['#3f5736','#a9c192'])}</div>
+ <div class="card"><b>Evolução do saldo devedor no mês</b>${lineC(dl,ev)}</div>
+ <div class="card"><b>Últimos 6 meses</b><p class="m">${leg('#3f5736','NFs')}${leg('#a9c192','Pagamentos')}${leg('#d99a06','Despesas avulsas')}</p>${barsC(M.map(x=>x.l),[M.map(x=>x.nf),M.map(x=>x.pg),M.map(x=>x.ex)],['#3f5736','#a9c192','#d99a06'])}</div>
+ <div class="card"><b>Despesas avulsas por categoria (mês)</b>${donut(exCat(mes+'-01',mes+'-31'))}</div>
+ <div class="card"><b>Saldo devedor por fornecedor</b>${donut(S.sup.map(s=>[s.nome,saldo(s.id)]).sort((p,q)=>q[1]-p[1]))}</div>
+ <div class="card"><b>Maiores saldos devedores</b>${rk.map(r=>`<div class="row"><div style="flex:1">${e(r.s.nome)}<div class="bar d"><i style="width:${r.x/top*100}%"></i></div></div><b>${R(r.x)}</b></div>`).join('')||'<p class="m">Nenhum saldo em aberto.</p>'}</div>
+ <div class="card"><b>Últimas movimentações</b>${mv.map(l=>`<div class="row"><span>${sn(l.sup)}<br><small class="m">${l.tipo.replace('_',' ')} · ${D(l.ts)}</small></span><b>${R(l.val)}</b></div>`).join('')||'<p class="m">Sem movimentações.</p>'}</div>`}
+function Inicio(){const m=S.pay.filter(p=>p.u==me.id),c=s=>m.filter(p=>p.st==s).length;
+ return `${head('Bem-vindo, '+e(me.nome)+' 👋','Envie e acompanhe seus comprovantes.')}<button class="btn big" onclick="go('send')">Enviar comprovante</button>
+ <div class="g" style="margin-top:14px"><div class="card"><div class="k">Enviados</div><div class="v">${m.length}</div></div><div class="card"><div class="k">Aguardando aprovação</div><div class="v">${c('ag')+c('an')}</div></div><div class="card"><div class="k">Precisam de correção</div><div class="v">${c('co')}</div></div></div>
+ <div class="card"><b>Últimos lançamentos</b>${m.slice(-5).reverse().map(p=>`<div class="row"><span>${sn(p.sup)}<br><small class="m">${D(p.data)}</small></span><span>${R(p.val)} ${chip(p.st)}</span></div>`).join('')||'<p class="m">Nenhum envio ainda.</p>'}</div>`}
+function Sup(){if(arg)return Ext(arg);
+ return `${head('Fornecedores','Cada fornecedor tem conta-corrente própria.')}<div class="card"><b>Novo fornecedor</b><div class="f"><div><label>Nome</label><input id="fn"></div><div><label>CPF/CNPJ</label><input id="fd" inputmode="numeric"></div><div><label>Saldo inicial (opcional)</label><input id="fs" inputmode="decimal"></div></div><button class="btn" onclick="addSupForm()">Cadastrar</button></div>
+ <div class="card sc"><table><tr><th>Cód.</th><th>Nome</th><th>CPF/CNPJ</th><th class="n">Saldo</th></tr>${S.sup.map(s=>`<tr onclick="go('sup',${s.id})" style="cursor:pointer"><td>${s.cod}</td><td>${e(s.nome)}</td><td>${e(s.doc)}</td><td class="n"><b>${R(saldo(s.id))}</b></td></tr>`).join('')||'<tr><td colspan=4 class="m">Nenhum fornecedor.</td></tr>'}</table></div>`}
+function Ext(id){const s=S.sup.find(x=>x.id==id);let run=0;const L=S.led.filter(l=>l.sup==id);
+ return `<div class="np"><button class="btn sm s" onclick="go('sup')">← Voltar</button> <button class="btn sm" onclick="print()">Gerar PDF</button></div><div class="ph">${logo('sl')}<b>Wise — Extrato</b></div>${head(e(s.nome),'Saldo atual: <b>'+R(saldo(id))+'</b>')}
+ <div class="card sc"><table><tr><th>Data</th><th>Movimentação</th><th class="n">Valor</th><th class="n">Saldo</th><th class="np"></th></tr>${L.map(l=>{run+=l.val;const rv=S.led.some(x=>x.ref==l.id&&x.tipo=='estorno');return `<tr><td>${D(l.ts)}</td><td>${l.tipo.replace('_',' ')}${l.tipo=='nota_fiscal'?' '+e((S.inv.find(i=>i.id==l.ref)||{}).num):''}${l.just?'<br><small class="m">'+e(l.just)+'</small>':''}${rv?' <span class="chip">estornado</span>':''}</td><td class="n">${R(l.val)}</td><td class="n"><b>${R(run)}</b></td><td class="np">${!rv&&['nota_fiscal','pagamento','ajuste'].includes(l.tipo)?`<button class="btn sm r" onclick="est(${l.id})">Estornar</button>`:''}</td></tr>`}).join('')||'<tr><td colspan=5 class="m">Sem movimentações.</td></tr>'}</table></div>
+ <div class="card np"><b>Ajuste autorizado</b><div class="f"><div><label>Valor (+ aumenta / − reduz)</label><input id="aj"></div><div><label>Justificativa</label><input id="ajj"></div></div><button class="btn s" onclick="ajuste(${id})">Lançar ajuste</button>${L.some(l=>l.tipo=='saldo_inicial')?'':`<hr><label>Saldo inicial</label><input id="si"><button class="btn s" onclick="inicial(${id})">Lançar saldo inicial</button>`}</div>`}
+function Nf(){return `${head('Notas fiscais','Lançamento manual: a NF aumenta o saldo do fornecedor.')}<div class="card"><div class="f"><div><label>Número da NF</label><input id="nn"></div><div><label>Valor (R$)</label><input id="nv" inputmode="decimal"></div><div><label>CNPJ</label><input id="nc" inputmode="numeric"></div><div><label>Nome do fornecedor</label><input id="nm"></div></div><label>Observação</label><textarea id="no" rows="2"></textarea><button class="btn" onclick="nova()">Lançar nota</button></div>
+ <div class="card sc"><table><tr><th>Data</th><th>NF</th><th>Fornecedor</th><th class="n">Valor</th><th></th></tr>${S.inv.slice().reverse().map(i=>`<tr><td>${D(i.ts)}</td><td>${e(i.num)}</td><td>${sn(i.sup)}</td><td class="n">${R(i.val)}</td><td>${i.st=='cancelada'?'<span class="chip r">cancelada</span>':''}</td></tr>`).join('')||'<tr><td colspan=5 class="m">Nenhuma nota.</td></tr>'}</table></div>`}
+function Apr(){const L=S.pay.filter(p=>['ag','an'].includes(p.st));
+ return `${head('Central de aprovações','Nada altera o saldo até você aprovar.')}${L.map(p=>{const sd=saldo(p.sup),dup=S.pay.some(x=>x.id!=p.id&&x.st!='rj'&&((p.txid&&(x.txid||'').toLowerCase()==p.txid.toLowerCase())||(x.sup==p.sup&&x.val==p.val&&x.data==p.data)));
+ return `<div class="card"><div class="row"><b>${sn(p.sup)}</b>${chip(p.st)}</div><div class="g"><div><div class="k">Valor</div><b>${R(p.val)}</b></div><div><div class="k">Data</div>${D(p.data)}</div><div><div class="k">Pagador</div>${e(p.pagador)||'—'}</div><div><div class="k">Forma</div>${e(p.forma)||'—'}</div></div>
+ <p class="m">ID transação: ${e(p.txid)||'—'} · Arquivo: ${e(p.arq)||'—'} · Enviado por ${un(p.u)}<br>Obs.: ${e(p.obs)||'Sem observações'}</p><p>Saldo atual <b>${R(sd)}</b> → após aprovação <b>${R(sd-p.val)}</b></p>
+ ${dup?'<div class="wa">⚠ Possível duplicidade (mesmo ID de transação ou mesmo valor/data/fornecedor). Confira antes de aprovar.</div>':''}${p.val>sd?'<div class="wa">Valor maior que o saldo: a aprovação exige justificativa e gera crédito.</div>':''}
+ <button class="btn" onclick="appr(${p.id},${p.st=='an'?1:0})">Aprovar</button> <button class="btn o" onclick="rej(${p.id},'co')">Solicitar correção</button> <button class="btn r" onclick="rej(${p.id},'rj')">Rejeitar</button></div>`}).join('')||'<p class="m">Nada pendente.</p>'}`}
+function Rel(){const f=localStorage.rf||mes+'-01',t=localStorage.rt||new Date().toISOString().slice(0,10),k=localStorage.rk||'ambos',s=localStorage.rs||'ap',a=new Date(f+'T00:00').getTime(),b=new Date(t+'T00:00').getTime()+864e5;
+ const rows=S.sup.map(x=>{const L=S.led.filter(l=>l.sup==x.id&&l.ts>=a&&l.ts<b);return{s:x,ant:saldo(x.id,a),nf:L.filter(l=>l.tipo=='nota_fiscal').reduce((q,l)=>q+l.val,0),pg:-L.filter(l=>l.tipo=='pagamento').reduce((q,l)=>q+l.val,0),fim:saldo(x.id,b)}}).filter(r=>r.nf||r.pg||r.ant||r.fim);
+ const T=z=>rows.reduce((q,r)=>q+r[z],0),pays=S.pay.filter(p=>p.st=='ap'&&p.at>=a&&p.at<b);
+ const IN=S.exp.filter(x=>x.data>=f&&x.data<=t),EX=IN.filter(x=>s=='all'||x.st==s),ap=IN.filter(x=>x.st=='ap'),tot=ap.reduce((q,x)=>q+x.val,0);
+ const grp=fn=>{const o={};ap.forEach(x=>{const g=fn(x)||'—';o[g]=(o[g]||0)+x.val});return Object.entries(o).sort((p,q)=>q[1]-p[1])};
+ const forn=`<div class="g" style="margin-top:12px"><div class="card"><div class="k">Saldo inicial</div><div class="v">${R(T('ant'))}</div></div><div class="card"><div class="k">Novas NFs</div><div class="v">${R(T('nf'))}</div></div><div class="card"><div class="k">Total pago</div><div class="v">${R(T('pg'))}</div></div><div class="card"><div class="k">Saldo final</div><div class="v">${R(T('fim'))}</div></div></div>
+ <div class="card sc"><table><tr><th>Fornecedor</th><th class="n">Anterior</th><th class="n">NFs</th><th class="n">Pago</th><th class="n">Final</th></tr>${rows.map(r=>`<tr><td>${e(r.s.nome)}</td><td class="n">${R(r.ant)}</td><td class="n">${R(r.nf)}</td><td class="n">${R(r.pg)}</td><td class="n"><b>${R(r.fim)}</b></td></tr>`).join('')}</table></div>
+ <div class="card"><b>Saldo final por fornecedor</b>${donut(rows.map(r=>[r.s.nome,r.fim]).sort((p,q)=>q[1]-p[1]))}</div>
+ <div class="card sc"><b>Pagamentos aprovados</b><table><tr><th>Data</th><th>Fornecedor</th><th>Pagador</th><th class="n">Valor</th><th>Forma</th><th>Enviado por</th><th>Aprovado por</th></tr>${pays.map(p=>`<tr><td>${D(p.data)}</td><td>${sn(p.sup)}</td><td>${e(p.pagador)}</td><td class="n">${R(p.val)}</td><td>${e(p.forma)}</td><td>${un(p.u)}</td><td>${un(p.by)}</td></tr>`).join('')}</table></div>
+ <p class="m">Aguardando aprovação: ${S.pay.filter(p=>['ag','an'].includes(p.st)).length}.</p>`;
+ const desp=`<h2>Despesas avulsas</h2><div class="g"><div class="card"><div class="k">Total aprovado</div><div class="v">${R(tot)}</div></div><div class="card"><div class="k">Aprovadas</div><div class="v">${ap.length}</div></div><div class="card"><div class="k">Pendentes</div><div class="v">${IN.filter(x=>x.st=='ag'||x.st=='co').length}</div></div><div class="card"><div class="k">Rejeitadas</div><div class="v">${IN.filter(x=>x.st=='rj').length}</div></div></div>
+ <div class="card"><b>Por categoria</b>${donut(grp(x=>x.cat))}</div><div class="card"><b>Por forma de pagamento</b>${donut(grp(x=>x.forma))}</div><div class="card"><b>Por funcionário</b>${donut(grp(x=>S.users.find(u=>u.id==x.u).nome))}</div>
+ <div class="card sc"><table><tr><th>Data</th><th>Descrição</th><th>Estabelecimento</th><th>Categoria</th><th>Forma</th><th class="n">Valor</th><th>Status</th></tr>${EX.map(x=>`<tr><td>${D(x.data)}</td><td>${e(x.desc)}</td><td>${e(x.est)}</td><td>${e(x.cat)}</td><td>${e(x.forma)}</td><td class="n">${R(x.val)}</td><td>${chip(x.st)}</td></tr>`).join('')||'<tr><td colspan=7 class="m">Nenhuma despesa.</td></tr>'}</table></div><p class="m">Despesas avulsas não alteram saldos de fornecedores.</p>`;
+ const sel=(v,o)=>o.map(([x,l])=>`<option value="${x}" ${x==v?'selected':''}>${l}</option>`).join('');
+ return `<div class="np">${head('Relatórios','Escolha o conteúdo e o período.')}<div class="f"><div><label>Conteúdo</label><select id="rk">${sel(k,[['ambos','Fornecedores + despesas avulsas'],['forn','Só fornecedores'],['desp','Só despesas avulsas']])}</select></div><div><label>Despesas a listar</label><select id="rs">${sel(s,[['ap','Aprovadas'],['ag','Pendentes'],['rj','Rejeitadas'],['all','Todas']])}</select></div><div><label>De</label><input type="date" id="rf" value="${f}"></div><div><label>Até</label><input type="date" id="rt" value="${t}"></div></div><button class="btn" onclick="localStorage.rf=v('rf');localStorage.rt=v('rt');localStorage.rk=v('rk');localStorage.rs=v('rs');go()">Aplicar</button> <button class="btn s" onclick="print()">Gerar PDF</button></div>
+ <div class="ph">${logo('sl')}<b>Wise — Relatório · ${D(a)} a ${D(b-864e5)}</b></div>${k!='desp'?forn:''}${k!='forn'?desp:''}`}
+function Exp(){const adm=me.role=='admin',L=S.exp.filter(x=>adm||x.u==me.id),tot={};L.filter(x=>x.st=='ap').forEach(x=>tot[x.cat]=(tot[x.cat]||0)+x.val);
+ return `<div class="np">${head('Despesas avulsas','Apenas registro de controle: nunca altera saldos de fornecedores.')}<div class="card"><div class="f"><div><label>Data</label><input type="date" id="ex"></div><div><label>Descrição</label><input id="ed"></div><div><label>Estabelecimento</label><input id="ee"></div><div><label>Categoria</label><input id="ec"></div><div><label>Valor</label><input id="ev" inputmode="decimal"></div><div><label>Forma de pagamento</label><input id="ef"></div><div><label>Pagador</label><input id="ep"></div></div><button class="btn" onclick="expSave()">Registrar despesa</button></div>
+ ${adm?'<button class="btn s" onclick="print()">Gerar PDF</button>':''}</div><div class="ph">${logo('sl')}<b>Wise — Despesas avulsas</b></div>
+ <div class="card"><b>Total aprovado por categoria</b>${Object.entries(tot).map(([k,x])=>`<div class="row"><span>${e(k)}</span><b>${R(x)}</b></div>`).join('')||'<p class="m">Nada aprovado ainda.</p>'}</div>
+ <div class="card sc"><table><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th class="n">Valor</th><th>Status</th><th class="np"></th></tr>${L.slice().reverse().map(x=>`<tr><td>${D(x.data)}</td><td>${e(x.desc)}<br><small class="m">${e(x.est)}${adm?' · '+un(x.u):''}${x.motivo?' · '+e(x.motivo):''}</small></td><td>${e(x.cat)}</td><td class="n">${R(x.val)}</td><td>${chip(x.st)}</td><td class="np">${adm&&x.st=='ag'?`<button class="btn sm" onclick="expDec(${x.id},'ap')">Aprovar</button> <button class="btn sm o" onclick="expDec(${x.id},'co')">Devolver</button> <button class="btn sm r" onclick="expDec(${x.id},'rj')">Rejeitar</button>`:''}</td></tr>`).join('')}</table></div>`}
+function Send(){const p=S.pay.find(x=>x.id==arg)||{};
+ return `${head(arg?'Corrigir comprovante':'Enviar comprovante',arg?'Motivo: '+e(p.motivo):'Confira os dados antes de enviar. Nenhuma baixa ocorre agora.')}<div class="card"><div class="f"><div><label>Fornecedor</label><select id="ps"><option value="">Selecione</option>${S.sup.filter(s=>s.ativo).map(s=>`<option value="${s.id}" ${p.sup==s.id?'selected':''}>${e(s.nome)}</option>`).join('')}</select></div><div><label>Valor (R$)</label><input id="pv" inputmode="decimal" value="${p.val||''}"></div><div><label>Data do pagamento</label><input type="date" id="pd" value="${p.data||''}"></div><div><label>Pagador</label><input id="pp" value="${e(p.pagador)}"></div><div><label>Forma de pagamento</label><input id="pf" value="${e(p.forma)}"></div><div><label>ID da transação</label><input id="pt" value="${e(p.txid)}"></div></div><label>Comprovante (PDF/JPG/PNG) — os campos são preenchidos automaticamente</label><input type="file" id="pa" accept=".pdf,.jpg,.jpeg,.png,image/*" onchange="lerArq(this)"><div id="ia" class="wa" style="display:none"></div><label>Observação para o administrador</label><textarea id="po" rows="2">${e(p.obs)}</textarea><button class="btn" onclick="envia()">Enviar para aprovação</button></div>`}
+function Mine(){return `${head('Meus lançamentos','')}<div class="card sc"><table><tr><th>Data</th><th>Fornecedor</th><th class="n">Valor</th><th>Situação</th><th></th></tr>${S.pay.filter(p=>p.u==me.id).reverse().map(p=>`<tr><td>${D(p.data)}</td><td>${sn(p.sup)}</td><td class="n">${R(p.val)}</td><td>${chip(p.st)}${p.motivo&&p.st!='ap'?'<br><small class="m">'+e(p.motivo)+'</small>':''}</td><td>${p.st=='co'?`<button class="btn sm o" onclick="go('send',${p.id})">Corrigir</button>`:''}</td></tr>`).join('')||'<tr><td colspan=5 class="m">Nada enviado.</td></tr>'}</table></div>`}
+function Usr(){return `${head('Usuários e permissões','Só um funcionário pode lançar despesas avulsas.')}<div class="card"><div class="f"><div><label>Usuário</label><div style="display:flex;align-items:center;gap:6px"><input id="ue" autocapitalize="none" placeholder="nome"><span class="m" style="white-space:nowrap;margin-bottom:6px">@wise.com</span></div></div><div><label>Senha</label><input id="up" type="password"></div><div><label>Perfil</label><select id="ur"><option value="func">Funcionário</option><option value="admin">Administrador</option></select></div></div><button class="btn" onclick="userAdd()">Criar usuário</button></div>
+ <div class="card">${S.users.filter(u=>!u.del).map(u=>`<div class="row"><span>${e(u.nome)} <small class="m">${e(u.email)} · ${u.role=='admin'?'Admin':'Funcionário'}</small> ${u.misc?'<span class="chip ok">despesas avulsas</span>':''}</span><span>${u.role=='func'&&!u.misc?`<button class="btn sm s" onclick="userMisc(${u.id})">Dar despesas avulsas</button> `:''}<button class="btn sm r" onclick="userDel(${u.id})">Excluir</button></span></div>`).join('')}</div>`}
+Object.assign(P,{sup:Sup,nf:Nf,apr:Apr,rel:Rel,exp:Exp,send:Send,mine:Mine,usr:Usr});
+function render(){const app=$('#app');
+ if(!me){app.innerHTML=`<div class="hero">${logo('lg')}<h2 id="wl" style="margin-top:14px;font-size:26px">Bem-vindo à<br><b style="color:var(--bl)">Wise</b></h2></div><div class="lw"><h1>ENTRAR</h1><p class="m">Entre com seu usuário e a senha da equipe.</p><label>Usuário</label><div style="display:flex;align-items:center;gap:6px"><input id="em" autocomplete="username" autocapitalize="none" placeholder="seunome" oninput="wl()"><span class="m" style="white-space:nowrap;margin-bottom:6px">@wise.com</span></div><label>Senha</label><input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key=='Enter')login()"><button class="btn big" onclick="login()">Entrar</button><p class="m">Acesso restrito à equipe.</p></div>`;return}
+ const adm=me.role=='admin',n=S.pay.filter(p=>['ag','an'].includes(p.st)).length,
+ nav=adm?[['home','Dashboard'],['sup','Fornecedores'],['nf','Notas'],['apr','Aprovações'+(n?' ('+n+')':'')],['rel','Relatórios'],['exp','Despesas avulsas'],['usr','Usuários']]:[['home','Início'],['send','Enviar comprovante'],['mine','Meus lançamentos'],...(me.misc?[['exp','Despesas avulsas']]:[])];
+ if(!nav.some(x=>x[0]==page))page='home';
+ app.innerHTML=`<header class="top np">${logo('sl')}<b class="bn">Wise</b><span class="sp"></span>${adm?`<button class="btn sm" onclick="go('nf')">+ Nova nota</button>`:`<button class="btn sm" onclick="go('send')">+ Comprovante</button>`}<span class="av">${e(me.nome[0])}</span><button class="ib" onclick="th()">◐</button><button class="ib" onclick="out()">Sair</button></header><nav class="np">${nav.map(([k,l])=>`<button class="tab ${k==page?'on':''}" onclick="go('${k}')">${l}</button>`).join('')}</nav><main class="wrap">${P[page]()}</main>`}
+th0();render();
+</script></body></html>
