@@ -155,4 +155,4 @@ async function rejeita(id){const m=prompt('Motivo da rejeição:');if(!m)return;
 async function devolve(id){const m=prompt('O que o funcionário deve corrigir:');if(!m)return;const{error}=await db.rpc('request_payment_correction',{p_payment:id,p_motivo:m});if(error)return toast(er(error),1);toast('Devolvido ao funcionário.');fecha();go('conf')}
 document.addEventListener('click',ev=>{const d=$('#dm');if(d&&!d.contains(ev.target)&&!ev.target.classList.contains('av'))d.remove()});
 addEventListener('load',()=>db.auth.getSession().then(({data:{session}})=>session?loadMe():telaLogin()));
-</script><script src="app2.js"></script><script src="app3.js"></script></body></html>
+</script><script src="app2.js"></script><script src="app3.js"></script><script src="app4.js"></script></body></html>
